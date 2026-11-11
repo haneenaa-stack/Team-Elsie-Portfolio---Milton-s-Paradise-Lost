@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paradise Lost — The Garden of Eden Labyrinth & Archive</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Medieval/Gothic Display + Literary Garamond + Archive Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        eden: {
+                            abyss: '#060b08',
+                            forest: '#09130d',
+                            thicket: '#112218',
+                            moss: '#1b3626',
+                            midnight: '#0b1622',
+                            dusk: '#132436',
+                            crimson: '#7a121b',
+                            scarlet: '#a61c28',
+                            gold: '#c5a059',
+                            gilt: '#e3be73',
+                            parchment: '#e8dec8',
+                            vellum: '#bfb299',
+                            ash: '#877f70'
+                        }
+                    },
+                    fontFamily: {
+                        gothic: ['UnifrakturMaguntia', 'serif'],
+                        cinzel: ['Cinzel Decorative', 'serif'],
+                        garamond: ['Cormorant Garamond', 'EB Garamond', 'Georgia', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Renaissance Chiaroscuro Canvas */
+        body {
+            background-color: #060b08;
+            color: #e8dec8;
+            font-family: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Ambient Chiaroscuro Vignette */
+        .chiaroscuro-vignette {
+            background:
+                radial-gradient(circle at 50% 22%, rgba(27, 54, 38, 0.25) 0%, rgba(11, 22, 34, 0.55) 52%, rgba(6, 11, 8, 0.96) 100%);
+        }
+
+        /* Subtle glassmorphism cards without harsh borders */
+        .eden-panel {
+            background: linear-gradient(160deg, rgba(17, 34, 24, 0.78) 0%, rgba(11, 22, 34, 0.85) 100%);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(197, 160, 89, 0.14);
+        }
+
+        .eden-subpanel {
+            background: rgba(6, 11, 8, 0.65);
+            box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.65);
+        }
+
+        /* Typography enhancements */
+        .title-glow {
+            text-shadow: 0 0 24px rgba(197, 160, 89, 0.35), 0 4px 12px rgba(0, 0, 0, 0.9);
+        }
+
+        .crimson-glow {
+            text-shadow: 0 0 18px rgba(166, 28, 40, 0.65);
+        }
+
+        /* Apple Node Floating & Glow Animation */
+        @keyframes appleSway {
+            0%, 100% { transform: rotate(-2deg) translateY(0px); }
+            50% { transform: rotate(2deg) translateY(-4px); }
+        }
+
+        .apple-marker {
+            transform-origin: top center;
+            animation: appleSway 5s ease-in-out infinite;
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
+            cursor: pointer;
+        }
+
+        .apple-marker:hover, .apple-marker.active-node {
+            animation-play-state: paused;
+            transform: scale(1.24) translateY(-3px);
+            filter: drop-shadow(0 0 18px rgba(197, 160, 89, 0.85)) drop-shadow(0 0 10px rgba(166, 28, 40, 0.9));
+            z-index: 30;
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #060b08;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1b3626;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7a121b;
+        }
+
+        /* Maze Path Pulse */
+        @keyframes pathDash {
+            to { stroke-dashoffset: -36; }
+        }
+        .maze-guide-path {
+            stroke-dasharray: 6 6;
+            animation: pathDash 2.2s linear infinite;
+        }
+    </style>
+</head>
+<body class="chiaroscuro-vignette min-h-screen flex flex-col justify-between selection:bg-eden-crimson selection:text-eden-parchment">
+
+    <!-- AMBIENT GOLDEN SPORE & MIST PARTICLE CANVAS -->
+    <canvas id="eden-atmosphere" class="fixed inset-0 pointer-events-none z-0 opacity-65"></canvas>
+
+    <!-- PERSISTENT BORDERLESS TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 w-full bg-eden-abyss/80 backdrop-blur-md transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+            <!-- Brand / Emblem -->
+            <a href="#home" onclick="navigateTo('home'); return false;" class="flex items-center gap-3.5 group">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-eden-crimson to-eden-abyss flex items-center justify-center shadow-lg shadow-eden-crimson/30 group-hover:scale-105 transition">
+                    <i class="fa-solid fa-apple-whole text-eden-gold text-lg"></i>
+                </div>
+                <div>
+                    <span class="font-gothic text-2xl sm:text-3xl text-eden-gold tracking-wide title-glow block leading-none">Paradise Lost</span>
+                    <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-eden-vellum/80 block mt-0.5">Garden of Eden Labyrinth • 1667</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav aria-label="Primary Navigation" class="flex flex-wrap items-center gap-1 sm:gap-2">
+                <button onclick="navigateTo('home')" data-nav="home" class="nav-pill px-3.5 py-1.5 rounded-full font-cinzel text-xs sm:text-sm tracking-wider transition-all text-eden-gold bg-eden-crimson/40">
+                    <i class="fa-solid fa-compass mr-1.5"></i>Garden Maze
+                </button>
+                <button onclick="navigateTo('build-7')" data-nav="build-7" class="nav-pill px-3.5 py-1.5 rounded-full font-cinzel text-xs sm:text-sm tracking-wider transition-all text-eden-vellum hover:text-eden-gold hover:bg-eden-thicket/60">
+                    <i class="fa-solid fa-feather-pointed mr-1.5"></i>Scholars (Build 7)
+                </button>
+                <button onclick="navigateTo('team-essays')" data-nav="team-essays" class="nav-pill px-3.5 py-1.5 rounded-full font-cinzel text-xs sm:text-sm tracking-wider transition-all text-eden-vellum hover:text-eden-gold hover:bg-eden-thicket/60">
+                    <i class="fa-solid fa-scroll mr-1.5"></i>Team Essays (2 & 6)
+                </button>
+                <button onclick="navigateTo('journal')" data-nav="journal" class="nav-pill px-3.5 py-1.5 rounded-full font-cinzel text-xs sm:text-sm tracking-wider transition-all text-eden-vellum hover:text-eden-gold hover:bg-eden-thicket/60">
+                    <i class="fa-solid fa-book-open mr-1.5"></i>Reader's Journal
+                </button>
+                <button onclick="navigateTo('archive')" data-nav="archive" class="nav-pill px-3.5 py-1.5 rounded-full font-cinzel text-xs sm:text-sm tracking-wider transition-all text-eden-vellum hover:text-eden-gold hover:bg-eden-thicket/60">
+                    <i class="fa-solid fa-sitemap mr-1.5"></i>Blueprint & Log
+                </button>
+            </nav>
+        </div>
+        <!-- Subtle Golden Hairline Divider -->
+        <div class="h-[1px] w-full bg-gradient-to-r from-transparent via-eden-gold/30 to-transparent"></div>
+    </header>
+
+    <!-- MAIN INTERACTIVE WORKSPACE -->
+    <main class="relative z-10 flex-grow max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-10">
+
+        <!-- =====================================================================
+             VIEW 1: HOME — THE GARDEN OF EDEN LABYRINTH & TREE OF KNOWLEDGE (#home / #maze)
+             ===================================================================== -->
+        <section id="view-home" class="page-view space-y-8">
+            <!-- Hero Literary Header -->
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-eden-thicket/70 text-eden-gold font-mono text-[11px] tracking-widest uppercase">
+                    <span class="w-1.5 h-1.5 rounded-full bg-eden-scarlet animate-ping"></span>
+                    Interactive Renaissance Cartography & Essay Hub
+                </div>
+                <h1 class="font-gothic text-4xl sm:text-6xl text-eden-parchment title-glow leading-tight">
+                    The Labyrinth of Eden &amp; Tree of Knowledge
+                </h1>
+                <p class="font-garamond italic text-lg sm:text-xl text-eden-vellum leading-relaxed">
+                    “So on he fares, and to the border comes / Of Eden, where delicious Paradise, / Now nearer, Crowns with her enclosure green...” — <span class="text-eden-gold not-italic font-cinzel text-xs">Book IV, Lines 131–133</span>
+                </p>
+            </div>
+
+            <!-- Interactive Labyrinth + Tree of Knowledge Stage -->
+            <div id="maze" class="eden-panel rounded-2xl p-4 sm:p-6 relative overflow-hidden">
+                <!-- Top Control Bar for Maze & Mode -->
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-eden-gold/15">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-xs text-eden-gold bg-eden-abyss/80 px-2.5 py-1 rounded">
+                            <i class="fa-solid fa-shoe-prints mr-1.5 text-eden-scarlet"></i>Pilgrim Position: <strong id="pilgrim-status" class="text-eden-parchment">Gate of Eden (Node 0)</strong>
+                        </span>
+                        <span class="hidden md:inline-block font-mono text-xs text-eden-vellum/75">
+                            Use <kbd class="px-1.5 py-0.5 bg-eden-abyss rounded text-eden-gold">WASD</kbd> / <kbd class="px-1.5 py-0.5 bg-eden-abyss rounded text-eden-gold">Arrows</kbd> or click any Apple / Path Node
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="resetPilgrim()" class="px-3 py-1.5 rounded-lg bg-eden-abyss/80 hover:bg-eden-crimson/50 text-eden-vellum hover:text-eden-parchment font-mono text-xs transition">
+                            <i class="fa-solid fa-rotate-left mr-1"></i>Reset Path
+                        </button>
+                        <button onclick="toggleMazeOverlay()" id="toggle-paths-btn" class="px-3 py-1.5 rounded-lg bg-eden-thicket hover:bg-eden-moss text-eden-gold font-mono text-xs transition">
+                            <i class="fa-solid fa-route mr-1"></i>Labyrinth Paths: ON
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Main Visual Stage: Responsive Grid with Interactive Tree/Maze Canvas + Live Inspector -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+                    
+                    <!-- Left 8 Cols: Renaissance Tree & Garden Maze SVG Map -->
+                    <div class="lg:col-span-8 relative rounded-xl overflow-hidden bg-eden-abyss min-h-[460px] sm:min-h-[560px] flex items-center justify-center shadow-inner">
+                        
+                        <!-- Bespoke Renaissance Garden of Eden & Gnarled Apple Tree SVG -->
+                        <svg id="eden-maze-svg" viewBox="0 0 1000 660" class="w-full h-full object-cover select-none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <!-- Gloomy Renaissance Sky & Forest Chiaroscuro -->
+                                <radialGradient id="edenChiaroscuro" cx="50%" cy="32%" r="72%">
+                                    <stop offset="0%" stop-color="#1d3b29" stop-opacity="0.95"/>
+                                    <stop offset="42%" stop-color="#0d1e2b" stop-opacity="0.96"/>
+                                    <stop offset="100%" stop-color="#050907" stop-opacity="1"/>
+                                </radialGradient>
+
+                                <!-- Golden Heavenly Beam breaking through dark clouds -->
+                                <linearGradient id="divineRay" x1="50%" y1="0%" x2="50%" y2="100%">
+                                    <stop offset="0%" stop-color="#e3be73" stop-opacity="0.22"/>
+                                    <stop offset="60%" stop-color="#c5a059" stop-opacity="0.05"/>
+                                    <stop offset="100%" stop-color="#060b08" stop-opacity="0"/>
+                                </linearGradient>
+
+                                <!-- Gnarled Bark Texture Gradient -->
+                                <linearGradient id="barkMain" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#170e08"/>
+                                    <stop offset="45%" stop-color="#362112"/>
+                                    <stop offset="100%" stop-color="#0f0905"/>
+                                </linearGradient>
+
+                                <!-- Canopy Foliage Shadow -->
+                                <radialGradient id="foliageDark" cx="40%" cy="35%" r="65%">
+                                    <stop offset="0%" stop-color="#22442f"/>
+                                    <stop offset="65%" stop-color="#0f2116"/>
+                                    <stop offset="100%" stop-color="#07100b"/>
+                                </radialGradient>
+
+                                <!-- Glossy Forbidden Crimson Apple -->
+                                <radialGradient id="crimsonFruit" cx="32%" cy="28%" r="68%">
+                                    <stop offset="0%" stop-color="#d92b3a"/>
+                                    <stop offset="55%" stop-color="#8a141e"/>
+                                    <stop offset="100%" stop-color="#2e0509"/>
+                                </radialGradient>
+
+                                <!-- Gilded Team Essay Apple -->
+                                <radialGradient id="goldFruit" cx="32%" cy="28%" r="68%">
+                                    <stop offset="0%" stop-color="#f7dc94"/>
+                                    <stop offset="55%" stop-color="#c5a059"/>
+                                    <stop offset="100%" stop-color="#5c4314"/>
+                                </radialGradient>
+
+                                <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+                                    <feGaussianBlur stdDeviation="4" result="blur"/>
+                                    <feMerge>
+                                        <feMergeNode in="blur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+
+                            <!-- Backdrop -->
+                            <rect width="1000" height="660" fill="url(#edenChiaroscuro)"/>
+
+                            <!-- Distant Eerie Mountain Ridges & River Tigris/Euphrates -->
+                            <path d="M 0,460 Q 180,390 360,445 T 720,420 T 1000,455 L 1000,660 L 0,660 Z" fill="#09141c" opacity="0.85"/>
+                            <path d="M 0,520 Q 260,470 500,510 T 1000,490 L 1000,660 L 0,660 Z" fill="#08120c"/>
+                            <!-- Winding River of Eden -->
+                            <path d="M 120,660 C 240,590 320,585 450,565 C 580,545 740,575 920,660" fill="none" stroke="#132b3d" stroke-width="26" opacity="0.65"/>
+                            <path d="M 140,660 C 250,595 330,588 450,568 C 580,548 730,578 900,660" fill="none" stroke="#284c66" stroke-width="4" opacity="0.4"/>
+
+                            <!-- Celestial Light Shaft -->
+                            <polygon points="360,0 640,0 780,660 220,660" fill="url(#divineRay)"/>
+
+                            <!-- Hedge Labyrinth Ring / Winding Garden Maze Pathways -->
+                            <g id="labyrinth-layer" opacity="0.9">
+                                <!-- Outer Labyrinth Hedge Walls (Subtle Gothic Maze Arcs) -->
+                                <ellipse cx="500" cy="495" rx="430" ry="135" fill="none" stroke="#162e20" stroke-width="14" stroke-dasharray="180 35 240 40"/>
+                                <ellipse cx="500" cy="495" rx="330" ry="98" fill="none" stroke="#1b3827" stroke-width="10" stroke-dasharray="140 30 190 35"/>
+                                <ellipse cx="500" cy="495" rx="220" ry="62" fill="none" stroke="#12261a" stroke-width="8" stroke-dasharray="95 25 130 25"/>
+
+                                <!-- Navigable Golden Trail Connecting Nodes -->
+                                <path id="maze-trail-lines" d="M 500,615 L 500,535 L 355,470 L 200,435 L 130,305 L 225,185 L 370,295 L 500,360 L 635,280 L 765,155 L 865,245 L 705,365 L 870,445" 
+                                      fill="none" stroke="#c5a059" stroke-width="2.2" opacity="0.45" class="maze-guide-path"/>
+                            </g>
+
+                            <!-- Deep Canopy Shadow Clusters -->
+                            <g opacity="0.92">
+                                <circle cx="215" cy="215" r="115" fill="url(#foliageDark)"/>
+                                <circle cx="345" cy="165" r="125" fill="url(#foliageDark)"/>
+                                <circle cx="505" cy="135" r="145" fill="url(#foliageDark)"/>
+                                <circle cx="670" cy="165" r="130" fill="url(#foliageDark)"/>
+                                <circle cx="805" cy="225" r="115" fill="url(#foliageDark)"/>
+                                <circle cx="155" cy="315" r="95" fill="url(#foliageDark)"/>
+                                <circle cx="855" cy="335" r="100" fill="url(#foliageDark)"/>
+                            </g>
+
+                            <!-- Realistic Gnarled Renaissance Tree Trunk & Spreading Boughs -->
+                            <g stroke-linecap="round" fill="none">
+                                <!-- Root Buttresses -->
+                                <path d="M 465,530 C 430,570 375,595 320,612" stroke="url(#barkMain)" stroke-width="22"/>
+                                <path d="M 535,530 C 570,570 625,595 685,612" stroke="url(#barkMain)" stroke-width="22"/>
+                                <path d="M 500,530 C 495,575 485,605 470,630" stroke="url(#barkMain)" stroke-width="20"/>
+
+                                <!-- Main Twisted Trunk -->
+                                <path d="M 480,545 C 462,455 528,395 492,305 C 472,255 512,195 500,120" stroke="url(#barkMain)" stroke-width="48"/>
+                                <!-- Bark Highlight Ridges -->
+                                <path d="M 492,535 C 478,455 534,395 502,310" stroke="#4d311c" stroke-width="6" opacity="0.65"/>
+
+                                <!-- Primary Left Boughs -->
+                                <path d="M 486,335 C 390,305 295,275 175,215" stroke="url(#barkMain)" stroke-width="24"/>
+                                <path d="M 355,295 C 275,335 195,355 115,330" stroke="url(#barkMain)" stroke-width="15"/>
+                                <path d="M 285,265 C 245,205 215,165 185,125" stroke="url(#barkMain)" stroke-width="13"/>
+                                <path d="M 415,315 C 375,375 335,415 295,435" stroke="url(#barkMain)" stroke-width="13"/>
+
+                                <!-- Primary Right Boughs -->
+                                <path d="M 506,315 C 610,285 715,250 835,205" stroke="url(#barkMain)" stroke-width="24"/>
+                                <path d="M 635,280 C 705,210 755,155 805,115" stroke="url(#barkMain)" stroke-width="14"/>
+                                <path d="M 695,260 C 775,305 835,345 895,375" stroke="url(#barkMain)" stroke-width="15"/>
+                                <path d="M 595,292 C 655,345 695,380 735,405" stroke="url(#barkMain)" stroke-width="12"/>
+                            </g>
+
+                            <!-- The Serpent Coiled Around the Trunk (Book IX Motif) -->
+                            <g opacity="0.9">
+                                <path d="M 466,490 C 535,470 535,435 468,418 C 415,405 538,375 524,342 C 516,322 478,318 462,332" 
+                                      fill="none" stroke="#244730" stroke-width="13" stroke-linecap="round"/>
+                                <path d="M 466,490 C 535,470 535,435 468,418 C 415,405 538,375 524,342 C 516,322 478,318 462,332" 
+                                      fill="none" stroke="#c5a059" stroke-width="2" stroke-dasharray="5 7" stroke-linecap="round" opacity="0.7"/>
+                                <!-- Serpent Head & Crimson Eye -->
+                                <ellipse cx="458" cy="334" rx="8" ry="5" fill="#1d3b27" transform="rotate(-20 458 334)"/>
+                                <circle cx="456" cy="332" r="1.8" fill="#ff3b4e" filter="url(#softGlow)"/>
+                            </g>
+
+                            <!-- Pilgrim / Reader Avatar Marker in the Maze -->
+                            <g id="pilgrim-token" transform="translate(500, 605)" class="transition-transform duration-500 ease-out">
+                                <circle r="14" fill="#c5a059" opacity="0.22">
+                                    <animate attributeName="r" values="11;18;11" dur="2.5s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle r="7" fill="#e8dec8" stroke="#c5a059" stroke-width="2.5"/>
+                                <text y="22" text-anchor="middle" fill="#e3be73" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1">PILGRIM</text>
+                            </g>
+
+                            <!-- 8 Hanging Forbidden Apples Layer (Populated via JS) -->
+                            <g id="svg-apples-layer"></g>
+                        </svg>
+
+                        <!-- Legend Overlay Bottom-Left -->
+                        <div class="absolute bottom-3 left-3 bg-eden-abyss/85 backdrop-blur-md px-3 py-2 rounded-lg flex flex-wrap items-center gap-4 text-[11px] font-mono">
+                            <span class="flex items-center gap-1.5 text-eden-parchment">
+                                <span class="w-3 h-3 rounded-full bg-gradient-to-br from-eden-scarlet to-eden-crimson inline-block shadow"></span>
+                                Crimson Apples (6): Build 7 Individual Pages
+                            </span>
+                            <span class="flex items-center gap-1.5 text-eden-gold">
+                                <span class="w-3 h-3 rounded-full bg-gradient-to-br from-eden-gilt to-eden-gold inline-block shadow"></span>
+                                Golden Apples (2): Build 2 &amp; 6 Team Essays
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Right 4 Cols: Selected Apple Node Inspector & Quick-Launch Card -->
+                    <div class="lg:col-span-4 eden-subpanel rounded-xl p-5 flex flex-col justify-between space-y-5">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span id="inspector-tag" class="px-2.5 py-1 rounded-full font-mono text-[11px] uppercase tracking-wider bg-eden-crimson/50 text-eden-gold">
+                                    Apple Node #1 • Build 7
+                                </span>
+                                <span id="inspector-coords" class="font-mono text-[11px] text-eden-ash">SEC-I // CANTOS</span>
+                            </div>
+
+                            <div class="flex items-start gap-3.5">
+                                <div id="inspector-emblem" class="w-12 h-12 shrink-0 rounded-xl bg-gradient-to-br from-eden-scarlet to-eden-abyss flex items-center justify-center text-eden-gold text-xl shadow-lg">
+                                    <i class="fa-solid fa-apple-whole"></i>
+                                </div>
+                                <div>
+                                    <h2 id="inspector-title" class="font-cinzel text-xl text-eden-parchment font-bold leading-snug">
+                                        Scholar 1: Satanic Hubris
+                                    </h2>
+                                    <p id="inspector-author" class="font-mono text-xs text-eden-gold mt-0.5">
+                                        Individual Contributor 1 • Book I &amp; II
+                                    </p>
+                                </div>
+                            </div>
+
+                            <p id="inspector-summary" class="font-garamond text-base text-eden-vellum leading-relaxed">
+                                An examination of Satan’s fallen majesty in Pandemonium, analyzing how Milton constructs and subsequently dismantles classical epic heroism.
+                            </p>
+
+                            <!-- Miltonic Excerpt Preview -->
+                            <div class="p-3.5 rounded-lg bg-eden-thicket/40 border-l-2 border-eden-gold/60">
+                                <p id="inspector-quote" class="font-garamond italic text-sm text-eden-parchment/90">
+                                    “What though the field be lost? / All is not lost; the unconquerable Will...”
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons: Open Here OR Open in Dedicated New Window -->
+                        <div class="space-y-2.5 pt-3 border-t border-eden-gold/15">
+                            <button onclick="openCurrentNode(false)" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-eden-crimson to-eden-scarlet hover:from-eden-scarlet hover:to-eden-crimson text-eden-parchment font-cinzel text-sm tracking-wider shadow-lg shadow-eden-crimson/30 transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-book-open-reader"></i>
+                                <span>Enter Essay Workspace</span>
+                            </button>
+                            <button onclick="openCurrentNode(true)" class="w-full py-2 px-4 rounded-xl bg-eden-thicket/80 hover:bg-eden-moss text-eden-gold font-cinzel text-xs tracking-wider transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                <span>Open in New Window (_blank)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Direct 8-Apple Quick Directory Strip -->
+                <div class="mt-6 pt-5 border-t border-eden-gold/15">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="font-cinzel text-xs uppercase tracking-widest text-eden-gold">Direct Fruit Directory (All 8 Nodes)</span>
+                        <span class="font-mono text-[11px] text-eden-ash">Click any apple to inspect or launch</span>
+                    </div>
+                    <div id="apple-quick-strip" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- =====================================================================
+             VIEW 2: BUILD 7 — INDIVIDUAL SCHOLAR PAGES (6 DEDICATED DOCUMENTS)
+             ===================================================================== -->
+        <section id="view-build-7" class="page-view hidden space-y-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="font-mono text-xs uppercase tracking-widest text-eden-scarlet">Build 7 • Individual Scholarly Contributions</span>
+                    <h1 class="font-gothic text-4xl sm:text-5xl text-eden-gold title-glow mt-1">Individual Scholar Portfolios</h1>
+                    <p class="font-garamond text-lg text-eden-vellum mt-1">
+                        Six dedicated workspaces linked to the crimson fruit of the Tree. Each member may compose, edit, and launch their document in a standalone window.
+                    </p>
+                </div>
+                <button onclick="openCurrentScholarNewWindow()" class="self-start md:self-auto px-4 py-2 rounded-xl bg-eden-thicket hover:bg-eden-moss text-eden-gold font-cinzel text-xs tracking-wider transition flex items-center gap-2">
+                    <i class="fa-solid fa-up-right-from-square"></i>Open Active Scholar in New Window
+                </button>
+            </div>
+
+            <!-- 6 Scholar Selector Tabs -->
+            <div id="scholar-selector-bar" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                <!-- Rendered via JS -->
+            </div>
+
+            <!-- Active Scholar Document Container -->
+            <div class="eden-panel rounded-2xl p-6 sm:p-8 space-y-6">
+                <!-- Document Header -->
+                <div class="flex flex-wrap items-start justify-between gap-4 pb-5 border-b border-eden-gold/20">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2.5">
+                            <span id="sch-badge" class="px-2.5 py-0.5 rounded-full bg-eden-crimson/60 text-eden-gold font-mono text-xs">Apple #1 • Build 7</span>
+                            <span id="sch-book-focus" class="font-mono text-xs text-eden-vellum">Focus: Book I &amp; II</span>
+                        </div>
+                        <h2 id="sch-essay-title" class="font-cinzel text-2xl sm:text-3xl text-eden-parchment font-bold pt-1">
+                            The Anatomy of Satanic Pride
+                        </h2>
+                        <p id="sch-author-line" class="font-garamond italic text-base text-eden-gold">
+                            Authored by Individual Scholar 1
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleScholarEditor()" id="sch-edit-toggle-btn" class="px-4 py-2 rounded-xl bg-eden-abyss hover:bg-eden-crimson/50 text-eden-gold font-cinzel text-xs tracking-wider transition flex items-center gap-2">
+                            <i class="fa-solid fa-pen-to-square"></i><span>Edit / Add Essay</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live Essay Composer Drawer (Hidden by default) -->
+                <div id="scholar-editor-box" class="hidden eden-subpanel rounded-xl p-5 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-cinzel text-sm text-eden-gold uppercase tracking-wider">
+                            <i class="fa-solid fa-feather mr-2"></i>Compose or Paste Scholar Essay (Auto-Saved)
+                        </h3>
+                        <span class="font-mono text-[11px] text-eden-ash">Saved locally in browser</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-mono text-xs text-eden-vellum mb-1">Contributor Name</label>
+                            <input type="text" id="edit-sch-author" class="w-full px-3.5 py-2 rounded-lg bg-eden-abyss text-eden-parchment font-garamond text-base focus:outline-none focus:ring-1 focus:ring-eden-gold">
+                        </div>
+                        <div>
+                            <label class="block font-mono text-xs text-eden-vellum mb-1">Assigned Paradise Lost Books</label>
+                            <input type="text" id="edit-sch-focus" class="w-full px-3.5 py-2 rounded-lg bg-eden-abyss text-eden-parchment font-garamond text-base focus:outline-none focus:ring-1 focus:ring-eden-gold">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-mono text-xs text-eden-vellum mb-1">Essay Title</label>
+                        <input type="text" id="edit-sch-title" class="w-full px-3.5 py-2 rounded-lg bg-eden-abyss text-eden-parchment font-cinzel text-base focus:outline-none focus:ring-1 focus:ring-eden-gold">
+                    </div>
+                    <div>
+                        <label class="block font-mono text-xs text-eden-vellum mb-1">Essay Body (Separate paragraphs with a blank line)</label>
+                        <textarea id="edit-sch-body" rows="8" class="w-full px-3.5 py-2.5 rounded-lg bg-eden-abyss text-eden-parchment font-garamond text-lg leading-relaxed focus:outline-none focus:ring-1 focus:ring-eden-gold"></textarea>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button onclick="toggleScholarEditor()" class="px-4 py-2 rounded-lg bg-eden-abyss text-eden-vellum font-cinzel text-xs">Cancel</button>
+                        <button onclick="saveScholarEssay()" class="px-5 py-2 rounded-lg bg-eden-crimson hover:bg-eden-scarlet text-eden-parchment font-cinzel text-xs tracking-wider">
+                            <i class="fa-solid fa-floppy-disk mr-1.5"></i>Save Essay to Node
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Formatted Literary Essay Reading View -->
+                <article id="sch-essay-body" class="space-y-5 font-garamond text-lg sm:text-xl text-eden-parchment/95 leading-relaxed max-w-4xl">
+                    <!-- Populated via JS -->
+                </article>
+            </div>
+        </section>
+
+
+        <!-- =====================================================================
+             VIEW 3: TEAM ESSAYS (BUILD 2 & BUILD 6)
+             ===================================================================== -->
+        <section id="view-team-essays" class="page-view hidden space-y-6">
+            <div class="text-center max-w-3xl mx-auto space-y-2">
+                <span class="font-mono text-xs uppercase tracking-widest text-eden-gold">Golden Fruit Nodes • Collaborative Synthesis</span>
+                <h1 class="font-gothic text-4xl sm:text-5xl text-eden-gold title-glow">Collaborative Team Essays</h1>
+                <p class="font-garamond text-lg text-eden-vellum">
+                    Linked to Apples #2 and #6 on the Tree of Knowledge. Shared group portals for Build 2 and Build 6 essays.
+                </p>
+            </div>
+
+            <!-- Dual Switcher for Build 2 & Build 6 -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="selectTeamEssay('build2')" id="tab-team-build2" class="px-6 py-3 rounded-xl font-cinzel text-sm tracking-wider bg-gradient-to-r from-eden-crimson to-eden-scarlet text-eden-parchment shadow-lg transition flex items-center gap-2.5">
+                    <i class="fa-solid fa-apple-whole text-eden-gold"></i>
+                    <span>Apple #2 — Build 2 Essay</span>
+                </button>
+                <button onclick="selectTeamEssay('build6')" id="tab-team-build6" class="px-6 py-3 rounded-xl font-cinzel text-sm tracking-wider bg-eden-thicket/80 text-eden-vellum hover:text-eden-gold transition flex items-center gap-2.5">
+                    <i class="fa-solid fa-apple-whole text-eden-gold"></i>
+                    <span>Apple #6 — Build 6 Essay</span>
+                </button>
+            </div>
+
+            <!-- Team Essay Reader & Live Editor -->
+            <div class="eden-panel rounded-2xl p-6 sm:p-8 space-y-6">
+                <div class="flex flex-wrap items-start justify-between gap-4 pb-5 border-b border-eden-gold/20">
+                    <div>
+                        <span id="team-badge" class="px-3 py-1 rounded-full bg-eden-gold/20 text-eden-gold font-mono text-xs">Apple #2 • Build 2 Collaborative Submission</span>
+                        <h2 id="team-title" class="font-cinzel text-2xl sm:text-3xl text-eden-parchment font-bold mt-2">
+                            Build 2: The Cosmic Hierarchy &amp; Subversion of Epic Heroism
+                        </h2>
+                        <p id="team-meta" class="font-mono text-xs text-eden-vellum mt-1">
+                            Collaborative Group Portal • Focus: Books I, II &amp; IV
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                        <button onclick="toggleTeamEditor()" class="px-4 py-2 rounded-xl bg-eden-abyss hover:bg-eden-crimson/50 text-eden-gold font-cinzel text-xs tracking-wider transition flex items-center gap-2">
+                            <i class="fa-solid fa-pen-nib"></i><span>Input / Edit Team Essay</span>
+                        </button>
+                        <button onclick="openTeamEssayNewWindow()" class="px-4 py-2 rounded-xl bg-eden-thicket hover:bg-eden-moss text-eden-parchment font-cinzel text-xs tracking-wider transition flex items-center gap-2">
+                            <i class="fa-solid fa-up-right-from-square"></i><span>New Window</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Team Essay Live Input Editor -->
+                <div id="team-editor-box" class="hidden eden-subpanel rounded-xl p-5 space-y-4">
+                    <h3 class="font-cinzel text-sm text-eden-gold uppercase tracking-wider">Edit Collaborative Team Essay</h3>
+                    <div>
+                        <label class="block font-mono text-xs text-eden-vellum mb-1">Team Essay Title</label>
+                        <input type="text" id="edit-team-title" class="w-full px-3.5 py-2 rounded-lg bg-eden-abyss text-eden-parchment font-cinzel text-base focus:outline-none focus:ring-1 focus:ring-eden-gold">
+                    </div>
+                    <div>
+                        <label class="block font-mono text-xs text-eden-vellum mb-1">Subtitle / Book Focus</label>
+                        <input type="text" id="edit-team-meta" class="w-full px-3.5 py-2 rounded-lg bg-eden-abyss text-eden-parchment font-mono text-xs focus:outline-none focus:ring-1 focus:ring-eden-gold">
+                    </div>
+                    <div>
+                        <label class="block font-mono text-xs text-eden-vellum mb-1">Full Team Essay Text (Separate paragraphs with blank lines)</label>
+                        <textarea id="edit-team-body" rows="9" class="w-full px-3.5 py-2.5 rounded-lg bg-eden-abyss text-eden-parchment font-garamond text-lg leading-relaxed focus:outline-none focus:ring-1 focus:ring-eden-gold"></textarea>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button onclick="toggleTeamEditor()" class="px-4 py-2 rounded-lg bg-eden-abyss text-eden-vellum font-cinzel text-xs">Cancel</button>
+                        <button onclick="saveTeamEssay()" class="px-5 py-2 rounded-lg bg-eden-crimson hover:bg-eden-scarlet text-eden-parchment font-cinzel text-xs tracking-wider">
+                            <i class="fa-solid fa-check mr-1.5"></i>Update Team Essay
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Team Essay Formatted Content -->
+                <article id="team-body" class="space-y-5 font-garamond text-lg sm:text-xl text-eden-parchment/95 leading-relaxed max-w-4xl">
+                    <!-- Rendered via JS -->
+                </article>
+            </div>
+        </section>
+
+
+        <!-- =====================================================================
+             VIEW 4: READER'S JOURNAL & PARADISE LOST READING LOG (#journal)
+             ===================================================================== -->
+        <section id="view-journal" class="page-view hidden space-y-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="font-mono text-xs uppercase tracking-widest text-eden-gold">Books I–XII • Marginalia &amp; Reflections</span>
+                    <h1 class="font-gothic text-4xl sm:text-5xl text-eden-gold title-glow mt-1">The Pilgrim’s Reading Journal</h1>
+                    <p class="font-garamond text-lg text-eden-vellum mt-1">
+                        Shared reflections, close-reading notes, and thematic marginalia for readers journeying through Milton’s epic.
+                    </p>
+                </div>
+                <button onclick="toggleJournalForm()" class="self-start md:self-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-eden-crimson to-eden-scarlet text-eden-parchment font-cinzel text-xs tracking-wider shadow-lg transition flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i><span>New Journal Entry</span>
+                </button>
+            </div>
+
+            <!-- Add New Journal Entry Drawer -->
+            <div id="journal-form-box" class="hidden eden-panel rounded-2xl p-6 space-y-4">
+                <h3 class="font-cinzel text-base text-eden-gold">Inscribe a Reading Reflection</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block font-mono text-xs text-eden-vellum mb-1">Reader / Scholar Name</label>
+                        <input type="text" id="j-input-author" placeholder="e.g., Scholar 3" class="w-full px-3.5 py-2 rounded-lg bg-eden-abyss text-eden-parchment font-garamond text-base focus:outline-none focus:ring-1 focus:ring-eden-gold">
+                    </div>
+                    <div>
+                        <label class="block font-mono text-xs text-eden-vellum mb-1">Book / Canto</label>
+                        <select id="j-input-book" class="w-full px-3.5 py-2 rounded-lg bg-eden-abyss text-eden-parchment font-mono text-xs focus:outline-none focus:ring-1 focus:ring-eden-gold">
+                            <option value="Book I">Book I — The Fiery Lake</option>
+                            <option value="Book II">Book II — Pandemonium Council</option>
+                            <option value="Book III">Book III — Celestial Light &amp; Free Will</option>
+                            <option value="Book IV">Book IV — Borders of Eden</option>
+                            <option value="Book V–VIII">Books V–VIII — Raphael’s Warning</option>
+                            <option value="Book IX">Book IX — The Temptation &amp; Fall</option>
+                            <option value="Book X–XII">Books X–XII — Expulsion &amp; Inner Paradise</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-mono text-xs text-eden-vellum mb-1">Entry Heading</label>
+                        <input type="text" id="j-input-title" placeholder="Title of your reflection..." class="w-full px-3.5 py-2 rounded-lg bg-eden-abyss text-eden-parchment font-cinzel text-sm focus:outline-none focus:ring-1 focus:ring-eden-gold">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-mono text-xs text-eden-vellum mb-1">Miltonic Verse Quote (Optional)</label>
+                    <input type="text" id="j-input-quote" placeholder="“Paste lines from Paradise Lost...”" class="w-full px-3.5 py-2 rounded-lg bg-eden-abyss text-eden-parchment font-garamond italic text-base focus:outline-none focus:ring-1 focus:ring-eden-gold">
+                </div>
+                <div>
+                    <label class="block font-mono text-xs text-eden-vellum mb-1">Reflection &amp; Analysis</label>
+                    <textarea id="j-input-body" rows="4" placeholder="Write your observations on imagery, theology, or character..." class="w-full px-3.5 py-2 rounded-lg bg-eden-abyss text-eden-parchment font-garamond text-base focus:outline-none focus:ring-1 focus:ring-eden-gold"></textarea>
+                </div>
+                <div class="flex justify-end gap-3">
+                    <button onclick="toggleJournalForm()" class="px-4 py-2 rounded-lg bg-eden-abyss text-eden-vellum font-cinzel text-xs">Cancel</button>
+                    <button onclick="addJournalEntry()" class="px-5 py-2 rounded-lg bg-eden-crimson hover:bg-eden-scarlet text-eden-parchment font-cinzel text-xs tracking-wider">Post to Journal</button>
+                </div>
+            </div>
+
+            <!-- Book Filter Pills -->
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="font-mono text-xs text-eden-ash mr-1">Filter by Canto:</span>
+                <button onclick="filterJournalEntries('ALL')" class="j-filter-chip active px-3 py-1 rounded-full font-mono text-xs bg-eden-gold text-eden-abyss font-medium">All Books</button>
+                <button onclick="filterJournalEntries('Book I')" class="j-filter-chip px-3 py-1 rounded-full font-mono text-xs bg-eden-thicket/70 text-eden-vellum hover:text-eden-gold">Book I</button>
+                <button onclick="filterJournalEntries('Book IV')" class="j-filter-chip px-3 py-1 rounded-full font-mono text-xs bg-eden-thicket/70 text-eden-vellum hover:text-eden-gold">Book IV</button>
+                <button onclick="filterJournalEntries('Book IX')" class="j-filter-chip px-3 py-1 rounded-full font-mono text-xs bg-eden-thicket/70 text-eden-vellum hover:text-eden-gold">Book IX</button>
+                <button onclick="filterJournalEntries('Book X–XII')" class="j-filter-chip px-3 py-1 rounded-full font-mono text-xs bg-eden-thicket/70 text-eden-vellum hover:text-eden-gold">Books X–XII</button>
+            </div>
+
+            <!-- Journal Cards Grid -->
+            <div id="journal-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Populated via JS -->
+            </div>
+        </section>
+
+
+        <!-- =====================================================================
+             VIEW 5: PROJECT BLUEPRINT, SITEMAP & DECISIONS LOG (#archive)
+             ===================================================================== -->
+        <section id="view-archive" class="page-view hidden space-y-8">
+            <div class="text-center max-w-3xl mx-auto space-y-2">
+                <span class="font-mono text-xs uppercase tracking-widest text-eden-gold">Documentation &amp; Architectural Specification</span>
+                <h1 class="font-gothic text-4xl sm:text-5xl text-eden-gold title-glow">Site Blueprint &amp; Decisions Log</h1>
+                <p class="font-garamond text-lg text-eden-vellum">
+                    Design system tokens, structural sitemap, target audience rationale, and dated group agreements.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Purpose, Target Audience & Constraints -->
+                <div class="eden-panel rounded-2xl p-6 space-y-4">
+                    <h2 class="font-cinzel text-xl text-eden-gold border-b border-eden-gold/20 pb-2.5">
+                        <i class="fa-solid fa-compass-drafting mr-2"></i>Purpose, Audience &amp; Constraints
+                    </h2>
+                    <div class="space-y-3 font-garamond text-lg text-eden-parchment/90 leading-relaxed">
+                        <p>
+                            <strong class="text-eden-gold font-cinzel text-sm uppercase tracking-wider block">Purpose of the Site:</strong>
+                            An atmospheric, interactive digital companion and collaborative essay repository designed to guide readers through the theological, psychological, and poetic labyrinth of John Milton’s <em>Paradise Lost</em>.
+                        </p>
+                        <p>
+                            <strong class="text-eden-gold font-cinzel text-sm uppercase tracking-wider block">Target Audience:</strong>
+                            Students, literary scholars, and first-time readers of Milton’s <em>Paradise Lost</em> seeking visual orientation across the epic’s twelve books alongside peer-authored critical analyses.
+                        </p>
+                        <p>
+                            <strong class="text-eden-gold font-cinzel text-sm uppercase tracking-wider block">Structural &amp; Technical Constraints:</strong>
+                            Features 8 interactive apple nodes on a Renaissance Garden of Eden tree/maze landing hub—6 routing to individual Build 7 scholar workspaces (supporting new-window `_blank` launch) and 2 routing to collaborative Team Essays (Build 2 &amp; Build 6), paired with a semantic `<noscript>` fallback directory.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Color Palette & Typography Style Guide -->
+                <div class="eden-panel rounded-2xl p-6 space-y-4">
+                    <h2 class="font-cinzel text-xl text-eden-gold border-b border-eden-gold/20 pb-2.5">
+                        <i class="fa-solid fa-palette mr-2"></i>Gloomy Renaissance Palette &amp; Fonts
+                    </h2>
+                    <p class="font-garamond text-base text-eden-vellum">
+                        Inspired by chiaroscuro Renaissance depictions of Eden—blending abyssal greens, eerie midnight blues, and blood crimson. Click any swatch to copy its hex value.
+                    </p>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <button onclick="copyHex('#09130d')" class="p-3 rounded-xl bg-[#09130d] text-left hover:scale-[1.02] transition shadow">
+                            <span class="block font-cinzel text-xs text-eden-parchment">Abyssal Forest</span>
+                            <span class="font-mono text-[11px] text-eden-gold">#09130d</span>
+                        </button>
+                        <button onclick="copyHex('#112218')" class="p-3 rounded-xl bg-[#112218] text-left hover:scale-[1.02] transition shadow">
+                            <span class="block font-cinzel text-xs text-eden-parchment">Eden Thicket</span>
+                            <span class="font-mono text-[11px] text-eden-gold">#112218</span>
+                        </button>
+                        <button onclick="copyHex('#0b1622')" class="p-3 rounded-xl bg-[#0b1622] text-left hover:scale-[1.02] transition shadow">
+                            <span class="block font-cinzel text-xs text-eden-parchment">Eerie Midnight</span>
+                            <span class="font-mono text-[11px] text-eden-gold">#0b1622</span>
+                        </button>
+                        <button onclick="copyHex('#7a121b')" class="p-3 rounded-xl bg-[#7a121b] text-left hover:scale-[1.02] transition shadow">
+                            <span class="block font-cinzel text-xs text-eden-parchment">Forbidden Crimson</span>
+                            <span class="font-mono text-[11px] text-eden-gold">#7a121b</span>
+                        </button>
+                        <button onclick="copyHex('#c5a059')" class="p-3 rounded-xl bg-[#c5a059] text-left hover:scale-[1.02] transition shadow">
+                            <span class="block font-cinzel text-xs text-eden-abyss font-bold">Antique Gilt</span>
+                            <span class="font-mono text-[11px] text-eden-abyss">#c5a059</span>
+                        </button>
+                        <button onclick="copyHex('#e8dec8')" class="p-3 rounded-xl bg-[#e8dec8] text-left hover:scale-[1.02] transition shadow">
+                            <span class="block font-cinzel text-xs text-eden-abyss font-bold">Aged Parchment</span>
+                            <span class="font-mono text-[11px] text-eden-abyss">#e8dec8</span>
+                        </button>
+                    </div>
+                    <div class="pt-2 space-y-1 font-mono text-xs text-eden-vellum">
+                        <div>• Display Headings: <span class="font-gothic text-lg text-eden-gold ml-1">UnifrakturMaguntia</span> &amp; <span class="font-cinzel text-sm text-eden-parchment">Cinzel Decorative</span></div>
+                        <div>• Literary Body Prose: <span class="font-garamond text-base text-eden-parchment ml-1">Cormorant Garamond / EB Garamond</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sitemap (One line per page: path — title — one-sentence purpose) -->
+            <div class="eden-panel rounded-2xl p-6 space-y-4">
+                <h2 class="font-cinzel text-xl text-eden-gold border-b border-eden-gold/20 pb-2.5">
+                    <i class="fa-solid fa-route mr-2"></i>Site Architecture &amp; Sitemap
+                </h2>
+                <ul class="space-y-2.5 font-mono text-xs sm:text-sm">
+                    <li class="p-3 rounded-lg bg-eden-abyss/70 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                        <span class="text-eden-gold font-bold shrink-0">/index.html#home</span>
+                        <span class="text-eden-parchment font-cinzel font-semibold shrink-0">— Garden of Eden Labyrinth &amp; Tree Hub —</span>
+                        <span class="text-eden-vellum font-garamond text-base">Serves as the interactive Renaissance apple tree and navigable maze gateway routing visitors to all 8 essay nodes.</span>
+                    </li>
+                    <li class="p-3 rounded-lg bg-eden-abyss/70 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                        <span class="text-eden-gold font-bold shrink-0">/index.html#build-7</span>
+                        <span class="text-eden-parchment font-cinzel font-semibold shrink-0">— Individual Scholar Portfolios (Apples 1, 3, 4, 5, 7, 8) —</span>
+                        <span class="text-eden-vellum font-garamond text-base">Hosts six dedicated personal essay workspaces with live editing and standalone new-window document viewing.</span>
+                    </li>
+                    <li class="p-3 rounded-lg bg-eden-abyss/70 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                        <span class="text-eden-gold font-bold shrink-0">/index.html#team-essays</span>
+                        <span class="text-eden-parchment font-cinzel font-semibold shrink-0">— Collaborative Team Essays: Build 2 &amp; Build 6 (Apples 2 &amp; 6) —</span>
+                        <span class="text-eden-vellum font-garamond text-base">Provides shared group essay portals for composing and reading synthesized team analyses of Milton’s epic.</span>
+                    </li>
+                    <li class="p-3 rounded-lg bg-eden-abyss/70 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                        <span class="text-eden-gold font-bold shrink-0">/index.html#journal</span>
+                        <span class="text-eden-parchment font-cinzel font-semibold shrink-0">— The Pilgrim’s Reading Journal —</span>
+                        <span class="text-eden-vellum font-garamond text-base">Offers a filterable book-by-book reading log where visitors and team members inscribe annotations on Paradise Lost.</span>
+                    </li>
+                    <li class="p-3 rounded-lg bg-eden-abyss/70 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                        <span class="text-eden-gold font-bold shrink-0">/index.html#archive</span>
+                        <span class="text-eden-parchment font-cinzel font-semibold shrink-0">— Site Blueprint &amp; Decisions Log —</span>
+                        <span class="text-eden-vellum font-garamond text-base">Documents the project’s aesthetic style guide, target audience specifications, and dated team agreements.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Dated Group Decisions Log -->
+            <div class="eden-panel rounded-2xl p-6 space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-eden-gold/20 pb-2.5">
+                    <h2 class="font-cinzel text-xl text-eden-gold">
+                        <i class="fa-solid fa-scroll mr-2"></i>Group Decisions Log
+                    </h2>
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="new-decision-input" placeholder="Add new dated team decision..." class="px-3 py-1.5 rounded-lg bg-eden-abyss text-eden-parchment font-garamond text-sm w-60 sm:w-80 focus:outline-none focus:ring-1 focus:ring-eden-gold">
+                        <button onclick="appendDecisionLog()" class="px-3.5 py-1.5 rounded-lg bg-eden-crimson hover:bg-eden-scarlet text-eden-parchment font-cinzel text-xs">
+                            Log Entry
+                        </button>
+                    </div>
+                </div>
+                <ul id="decisions-log-list" class="space-y-3 font-garamond text-lg">
+                    <!-- Populated via JS with 10/05/2026 entry -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- Progressive Enhancement Fallback for Non-JS Browsers -->
+        <noscript>
+            <div class="p-6 my-6 rounded-xl bg-eden-thicket text-eden-parchment">
+                <h2 class="font-cinzel text-xl text-eden-gold">Garden of Eden Directory (Static Navigation)</h2>
+                <p class="mt-2">JavaScript is disabled. You can still access all sections via direct anchor links: #home, #build-7, #team-essays, #journal, and #archive.</p>
+            </div>
+        </noscript>
+    </main>
+
+    <!-- TOAST NOTIFICATION BANNER -->
+    <div id="eden-toast" class="fixed bottom-5 right-5 z-50 hidden px-4 py-2.5 rounded-xl bg-eden-thicket text-eden-gold font-mono text-xs shadow-2xl border border-eden-gold/30">
+        Copied to clipboard
+    </div>
+
+    <!-- MINIMAL BORDERLESS FOOTER -->
+    <footer class="relative z-10 w-full bg-eden-abyss/90 mt-12 py-6 px-4 sm:px-8">
+        <div class="h-[1px] w-full bg-gradient-to-r from-transparent via-eden-gold/25 to-transparent mb-6"></div>
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-eden-ash">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-apple-whole text-eden-scarlet"></i>
+                <span>Paradise Lost Interactive Companion • Garden of Eden Edition</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="#home" onclick="navigateTo('home'); return false;" class="hover:text-eden-gold transition">Tree &amp; Maze</a>
+                <a href="#build-7" onclick="navigateTo('build-7'); return false;" class="hover:text-eden-gold transition">Build 7 Scholars</a>
+                <a href="#team-essays" onclick="navigateTo('team-essays'); return false;" class="hover:text-eden-gold transition">Builds 2 &amp; 6</a>
+                <a href="#archive" onclick="navigateTo('archive'); return false;" class="hover:text-eden-gold transition">Decisions Log</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- APPLICATION LOGIC -->
+    <script>
+        /* =====================================================================
+           1. DATA MODELS & DEFAULT CONTENT
+           ===================================================================== */
+        const APPLE_NODES = [
+            {
+                id: 1,
+                type: 'individual',
+                build: 'Build 7',
+                label: 'Scholar 1',
+                title: 'The Anatomy of Satanic Hubris',
+                author: 'Individual Scholar 1',
+                focus: 'Books I & II • Pandemonium',
+                coords: 'NW-BRANCH // NODE 01',
+                x: 225, y: 185,
+                summary: 'Examines how Milton constructs Satan with classical epic grandeur in Book I only to expose the spiritual self-imprisonment beneath his rebellious rhetoric.',
+                quote: '“The mind is its own place, and in it self / Can make a Heav’n of Hell, a Hell of Heav’n.” (I.254–255)'
+            },
+            {
+                id: 2,
+                type: 'team',
+                build: 'Build 2',
+                label: 'Team Essay I',
+                title: 'Build 2: Cosmic Hierarchy & Heroic Subversion',
+                author: 'Collaborative Group Essay (Build 2)',
+                focus: 'Books I, II & IV • Group Synthesis',
+                coords: 'INNER-BOUGH // NODE 02',
+                x: 370, y: 295,
+                summary: 'Our team’s first collaborative study exploring how Paradise Lost redefines true heroism—contrasting Satan’s martial pride with Abdiel’s solitary fidelity.',
+                quote: '“Better to reign in Hell, then serve in Heav’n.” (I.263)'
+            },
+            {
+                id: 3,
+                type: 'individual',
+                build: 'Build 7',
+                label: 'Scholar 3',
+                title: 'Eve at the Fountain: Selfhood & Curiosity',
+                author: 'Individual Scholar 3',
+                focus: 'Book IV • Pre-Lapsarian Eden',
+                coords: 'WEST-CANOPY // NODE 03',
+                x: 130, y: 305,
+                summary: 'Analyzes Eve’s awakening beside the reflective pool in Book IV, tracing her innate intellectual curiosity and aesthetic wonder prior to the Fall.',
+                quote: '“As I bent down to look, just opposite, / A Shape within the watry gleam appeerd...” (IV.460–461)'
+            },
+            {
+                id: 4,
+                type: 'individual',
+                build: 'Build 7',
+                label: 'Scholar 4',
+                title: 'Celestial Warfare & The Limits of Force',
+                author: 'Individual Scholar 4',
+                focus: 'Books V & VI • War in Heaven',
+                coords: 'LOWER-WEST // NODE 04',
+                x: 200, y: 435,
+                summary: 'Investigates Raphael’s account of the angelic war, demonstrating why material weaponry fails against divine order and free obedience.',
+                quote: '“Servant of God, well done, well hast thou fought / The better fight...” (VI.29–30)'
+            },
+            {
+                id: 5,
+                type: 'individual',
+                build: 'Build 7',
+                label: 'Scholar 5',
+                title: 'The Serpent’s Sophistry in Book IX',
+                author: 'Individual Scholar 5',
+                focus: 'Book IX • The Temptation',
+                coords: 'CROWN-EAST // NODE 05',
+                x: 765, y: 155,
+                summary: 'A close rhetorical dissection of Satan’s temptation speech, revealing how flattery and false empiricism disguise disobedience as enlightenment.',
+                quote: '“O Sacred, Wise, and Wisdom-giving Plant, / Mother of Science...” (IX.679–680)'
+            },
+            {
+                id: 6,
+                type: 'team',
+                build: 'Build 6',
+                label: 'Team Essay II',
+                title: 'Build 6: Knowledge, Free Will & The Fortunate Fall',
+                author: 'Collaborative Group Essay (Build 6)',
+                focus: 'Books IX–XII • Group Synthesis',
+                coords: 'RIGHT-BOUGH // NODE 06',
+                x: 635, y: 280,
+                summary: 'Our team’s second collaborative essay examining the moral mechanics of the Fall, mutual forgiveness between Adam and Eve, and the promise of an inner Paradise.',
+                quote: '“A paradise within thee, happier far.” (XII.587)'
+            },
+            {
+                id: 7,
+                type: 'individual',
+                build: 'Build 7',
+                label: 'Scholar 7',
+                title: 'Adam’s Tragic Choice: Passion Over Reason',
+                author: 'Individual Scholar 7',
+                focus: 'Book IX • The Second Fall',
+                coords: 'EAST-CANOPY // NODE 07',
+                x: 865, y: 245,
+                summary: 'Explores Adam’s conscious decision to eat the fruit out of devotion to Eve, contrasting Eve’s deception with Adam’s deliberate prioritization of human bond over divine command.',
+                quote: '“Certain my resolution is to Die; / How can I live without thee...” (IX.907–908)'
+            },
+            {
+                id: 8,
+                type: 'individual',
+                build: 'Build 7',
+                label: 'Scholar 8',
+                title: 'Hand in Hand: Exile & Post-Lapsarian Hope',
+                author: 'Individual Scholar 8',
+                focus: 'Books XI & XII • Expulsion from Eden',
+                coords: 'SOUTH-EAST // NODE 08',
+                x: 870, y: 445,
+                summary: 'Traces Archangel Michael’s vision of human history and the poignant closing lines as Adam and Eve step into the fallen world together.',
+                quote: '“They hand in hand with wandring steps and slow, / Through Eden took thir solitarie way.” (XII.648–649)'
+            }
+        ];
+
+        const DEFAULT_SCHOLAR_ESSAYS = {
+            1: {
+                author: 'Individual Scholar 1',
+                focus: 'Books I & II • Pandemonium',
+                title: 'The Anatomy of Satanic Hubris in Books I & II',
+                body: `In Book I of Paradise Lost, John Milton confronts the reader with a striking literary paradox: the poem’s most immediately captivating orator is its cosmic antagonist. Rising from the burning lake of Tartarus, Satan speaks with the cadence of a classical epic commander, rallying his stunned legions through sheer force of rhetoric.\n\nYet Milton embeds subtle ironies within every boast. When Satan declares that the mind can make a Heaven of Hell, he inadvertently confesses that his torment is internal and inescapable. Rather than liberating himself, his pride locks him into perpetual alienation from the source of all being.\n\nBy the time the fallen angels construct Pandemonium and debate their future in Book II, Satan’s republican language of liberty is exposed as an instrument of solitary tyranny—setting the stage for his solitary voyage toward the newly created Garden of Eden.`
+            },
+            3: {
+                author: 'Individual Scholar 3',
+                focus: 'Book IV • Pre-Lapsarian Eden',
+                title: 'Eve at the Fountain: Selfhood, Innocence & Curiosity',
+                body: `Eve’s recollection of her first moments of consciousness in Book IV offers one of the most delicate psychological portraits in seventeenth-century poetry. Awakening beside a clear, murmuring pool, Eve gazes into the water and is captivated by the answering sympathy of her own reflection.\n\nFar from simple vanity, this episode demonstrates Eve’s innate capacity for wonder, self-reflection, and relational desire. When a divine voice guides her toward Adam, she enters a partnership rooted in mutual delight and shared stewardship of Eden.\n\nUnderstanding Eve’s pre-lapsarian curiosity illuminates why Satan targets her intellect in Book IX: her desire to grow in wisdom is inherently noble, only becoming tragic when severed from trust.`
+            },
+            4: {
+                author: 'Individual Scholar 4',
+                focus: 'Books V & VI • War in Heaven',
+                title: 'Celestial Warfare & The Limits of Material Force',
+                body: `Across Books V and VI, the Archangel Raphael recounts the three-day war in Heaven to warn Adam of the peril approaching Eden. Milton stages a cosmic collision between angelic hosts that deliberately echoes—and ultimately transcends—Homer’s Iliad.\n\nWhen Satan invents celestial artillery and gunpowder on the second day, he introduces mechanical violence into eternity. However, Milton shows that physical force cannot overthrow moral and cosmic order; the angels simply uproot mountains to bury the engines of war.\n\nThe conflict resolves only when the Son rides forth in chariot majesty, proving that true sovereignty rests in divine righteousness rather than destructive might.`
+            },
+            5: {
+                author: 'Individual Scholar 5',
+                focus: 'Book IX • The Temptation',
+                title: 'The Serpent’s Sophistry: Rhetoric & Deception in Book IX',
+                body: `Book IX represents the dramatic epicenter of Paradise Lost, where cosmic warfare narrows into a single conversation beneath the boughs of the Tree of Knowledge. Disguised within the serpent, Satan abandons martial force in favor of linguistic seduction.\n\nHis strategy unfolds in three calculated movements: first, flattering Eve as the sovereign empress of nature; second, presenting a fabricated empirical proof by claiming the fruit granted him human speech and reason; and third, framing God’s prohibition as envious restraint.\n\nThrough this rhetorical masterclass, Milton illustrates how evil disguises itself as liberation while concealing mortal consequence.`
+            },
+            7: {
+                author: 'Individual Scholar 7',
+                focus: 'Book IX • The Second Fall',
+                title: 'Adam’s Tragic Choice: Passion Over Reason',
+                body: `Milton draws a sharp psychological distinction between the falls of Eve and Adam. While Eve is deceived by the serpent’s intricate sophistry, Adam eats the forbidden fruit "not deceav’d, / But fondly overcome with Femal charm."\n\nWhen Eve returns carrying the bough, the garland of roses Adam has woven for her slips from his numbed fingers—a silent emblem of lost innocence. Recognizing immediately that Eve is doomed, Adam resolves to share her fate rather than endure Eden alone.\n\nHis choice is deeply moving in its human loyalty, yet Milton frames it as a tragic inversion of hierarchy in which devotion to the created partner eclipses obedience to the Creator.`
+            },
+            8: {
+                author: 'Individual Scholar 8',
+                focus: 'Books XI & XII • Expulsion from Eden',
+                title: 'Hand in Hand: Exile & The Paradise Within',
+                body: `The final two books of Paradise Lost transform personal tragedy into sweeping historical vision. From the highest hill of Paradise, the Archangel Michael reveals to Adam the turbulent future of humanity—from fratricide and flood to redemption.\n\nRather than ending in despair, Michael’s instruction equips Adam and Eve with patience, temperance, and faith, promising that they may cultivate "a paradise within thee, happier far."\n\nIn the poem’s unforgettable closing image, Adam and Eve descend from Eden hand in hand—weeping yet reconciled, stepping into human history with Providence as their guide.`
+            }
+        };
+
+        const DEFAULT_TEAM_ESSAYS = {
+            build2: {
+                badge: 'Apple #2 • Build 2 Collaborative Submission',
+                title: 'Build 2: The Cosmic Hierarchy & Subversion of Epic Heroism',
+                meta: 'Collaborative Team Essay • Focus: Books I, II & IV',
+                body: `In Build 2, our collaborative team examines how John Milton transforms the conventions of classical epic poetry to interrogate the nature of authority, rebellion, and genuine heroism. Traditional epics from Homer to Virgil celebrate martial prowess and individual glory; Milton deliberately clothes Satan in these familiar heroic attributes in Books I and II only to reveal their spiritual hollowness.\n\nThrough close analysis of the Pandemonium debate, our group traced how Satan, Moloch, Belial, and Mammon each embody distorted political rhetorics—ranging from reckless vengeance to cynical complacency. Against this backdrop, Milton elevates quiet moral courage: the lone seraph Abdiel who stands faithful amid countless rebels, and the harmonious stewardship of Adam and Eve in Book IV.\n\nUltimately, Build 2 argues that Milton’s Garden of Eden serves as a living moral cosmos where true freedom flourishes through alignment with wisdom rather than prideful autonomy.`
+            },
+            build6: {
+                badge: 'Apple #6 • Build 6 Collaborative Submission',
+                title: 'Build 6: Knowledge, Free Will & Moral Restoration',
+                meta: 'Collaborative Team Essay • Focus: Books IX–XII',
+                body: `Build 6 synthesizes our group’s research into the theological and psychological core of Paradise Lost: the relationship between free will, temptation, and redemption. Throughout the epic, Milton insists that forced obedience holds no moral value; humanity was created "sufficient to have stood, though free to fall."\n\nExamining Book IX alongside Book X, our team analyzed how the immediate aftermath of eating the forbidden fruit fractures both internal peace and human companionship—turning innocent love into mutual blame. Yet Milton refuses to leave Adam and Eve in perpetual ruin.\n\nWhen Eve initiates reconciliation in Book X and Adam responds with shared contrition, grace begins its restorative work. Build 6 concludes that the loss of the physical Garden of Eden opens the path toward an enduring inner sanctuary forged through humility, knowledge, and mutual grace.`
+            }
+        };
+
+        const DEFAULT_JOURNAL = [
+            {
+                id: 101,
+                author: 'Scholar 1',
+                book: 'Book I',
+                title: 'Darkness Visible & Chiaroscuro Imagery',
+                quote: '“No light, but rather darkness visible / Serv’d only to discover sights of woe...” (I.63–64)',
+                body: 'Milton’s oxymoron "darkness visible" immediately sets the gloomy Renaissance palette of our entire project. Hell is not merely an absence of light, but an oppressive illumination that reveals alienation.'
+            },
+            {
+                id: 102,
+                author: 'Scholar 3',
+                book: 'Book IV',
+                title: 'Satan’s Soliloquy on Mount Niphates',
+                quote: '“Me miserable! which way shall I flie / Infinite wrauth, and infinite despaire?” (IV.73–74)',
+                body: 'Seeing Eden for the first time strips away Satan’s heroic mask. His private despair proves that Eden’s beauty intensifies the torment of a mind closed to grace.'
+            },
+            {
+                id: 103,
+                author: 'Scholar 5',
+                book: 'Book IX',
+                title: 'Nature’s Wound at the Moment of the Fall',
+                quote: '“Earth felt the wound, and Nature from her seat / Sighing through all her Works gave signs of woe...” (IX.782–783)',
+                body: 'Milton personifies the Garden of Eden itself reacting with grief when Eve plucks the fruit—linking ecological harmony directly to human moral stewardship.'
+            },
+            {
+                id: 104,
+                author: 'Scholar 8',
+                book: 'Book X–XII',
+                title: 'The Solitary Way Forward',
+                quote: '“The World was all before them, where to choose / Thir place of rest...” (XII.646–647)',
+                body: 'Despite the sorrow of leaving Paradise, the ending feels remarkably open and resilient. Choice remains intact, now tempered by hard-won wisdom.'
+            }
+        ];
+
+        const DEFAULT_DECISIONS = [
+            {
+                date: '10/05/2026',
+                text: 'Team decided on Garden of Eden theme, structural aspects (headings, landing page, etc.), color scheme (gloomy dark reds, dark greens, eerie dark blues, and medieval/gothic fonts), and 8 interactive apple nodes linking to 6 Build 7 individual pages and 2 team essays (Build 2 & Build 6).'
+            }
+        ];
+
+        /* =====================================================================
+           2. APPLICATION STATE & STORAGE
+           ===================================================================== */
+        let activeAppleId = 1;
+        let activeScholarId = 1;
+        let activeTeamKey = 'build2';
+        let activeJournalFilter = 'ALL';
+        let showMazePaths = true;
+
+        let scholarEssays = JSON.parse(localStorage.getItem('pl_scholar_essays')) || DEFAULT_SCHOLAR_ESSAYS;
+        let teamEssays = JSON.parse(localStorage.getItem('pl_team_essays')) || DEFAULT_TEAM_ESSAYS;
+        let journalEntries = JSON.parse(localStorage.getItem('pl_journal_entries')) || DEFAULT_JOURNAL;
+        let decisionsLog = JSON.parse(localStorage.getItem('pl_decisions_log')) || DEFAULT_DECISIONS;
+
+        /* =====================================================================
+           3. INITIALIZATION & URL ROUTING
+           ===================================================================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            initAtmosphereCanvas();
+            renderMazeApples();
+            renderQuickAppleStrip();
+            selectAppleNode(1, false);
+            renderScholarSelector();
+            loadScholarView(1);
+            loadTeamEssayView('build2');
+            renderJournalGrid();
+            renderDecisionsLog();
+
+            // Support direct query or hash routing (including standalone new windows)
+            const params = new URLSearchParams(window.location.search);
+            const targetNode = params.get('node');
+            if (targetNode) {
+                const nodeId = parseInt(targetNode, 10);
+                const found = APPLE_NODES.find(n => n.id === nodeId);
+                if (found) {
+                    selectAppleNode(found.id, false);
+                    openCurrentNode(false);
+                    return;
+                }
+            }
+
+            const hash = window.location.hash.replace('#', '');
+            if (hash && hash !== 'maze') {
+                navigateTo(hash);
+            }
+        });
+
+        function navigateTo(viewId) {
+            const target = viewId === 'maze' ? 'home' : viewId;
+            document.querySelectorAll('.page-view').forEach(sec => sec.classList.add('hidden'));
+            const activeSec = document.getElementById(`view-${target}`);
+            if (activeSec) {
+                activeSec.classList.remove('hidden');
+            } else {
+                document.getElementById('view-home').classList.remove('hidden');
+            }
+
+            document.querySelectorAll('.nav-pill').forEach(btn => {
+                if (btn.dataset.nav === target) {
+                    btn.classList.add('text-eden-gold', 'bg-eden-crimson/40');
+                    btn.classList.remove('text-eden-vellum');
+                } else {
+                    btn.classList.remove('text-eden-gold', 'bg-eden-crimson/40');
+                    btn.classList.add('text-eden-vellum');
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* =====================================================================
+           4. GARDEN LABYRINTH & 8 APPLE NODES RENDERING + KEYBOARD NAV
+           ===================================================================== */
+        function renderMazeApples() {
+            const layer = document.getElementById('svg-apples-layer');
+            layer.innerHTML = '';
+
+            APPLE_NODES.forEach((node, idx) => {
+                const isTeam = node.type === 'team';
+                const fillRef = isTeam ? 'url(#goldFruit)' : 'url(#crimsonFruit)';
+                const strokeColor = isTeam ? '#fff3cc' : '#c5a059';
+
+                const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                g.setAttribute('transform', `translate(${node.x}, ${node.y})`);
+                g.setAttribute('class', 'apple-marker');
+                g.setAttribute('id', `svg-apple-${node.id}`);
+                g.style.animationDelay = `${idx * 0.45}s`;
+
+                g.innerHTML = `
+                    <!-- Hanging Twig Thread -->
+                    <line x1="0" y1="-28" x2="0" y2="-14" stroke="#362112" stroke-width="2.5"/>
+                    <!-- Outer Halo -->
+                    <circle r="24" fill="${isTeam ? '#c5a059' : '#a61c28'}" opacity="0.22"/>
+                    <!-- Leaf -->
+                    <path d="M 1,-15 Q 11,-24 17,-16 Q 9,-9 1,-15 Z" fill="#234d32" stroke="#c5a059" stroke-width="0.8"/>
+                    <!-- Stem -->
+                    <path d="M 0,-13 Q 2,-21 -3,-24" fill="none" stroke="#4d311c" stroke-width="2.5" stroke-linecap="round"/>
+                    <!-- Glossy Renaissance Apple Body -->
+                    <path d="M 0,-12 C -12,-18 -22,-6 -17,10 C -13,22 -3,23 0,18 C 3,23 13,22 17,10 C 22,-6 12,-18 0,-12 Z"
+                          fill="${fillRef}" stroke="${strokeColor}" stroke-width="1.4"/>
+                    <!-- Specular Highlight -->
+                    <ellipse cx="-7" cy="-4" rx="3.2" ry="6" fill="#ffffff" opacity="0.38" transform="rotate(-22 -7 -4)"/>
+                    <!-- Node Number -->
+                    <text y="5" text-anchor="middle" fill="${isTeam ? '#060b08' : '#e8dec8'}" font-family="Cinzel Decorative, serif" font-weight="700" font-size="12">${node.id}</text>
+                    <!-- Label Pill Below Apple -->
+                    <rect x="-42" y="25" width="84" height="17" rx="8" fill="#060b08" fill-opacity="0.86" stroke="#c5a059" stroke-opacity="0.45" stroke-width="0.8"/>
+                    <text y="36.5" text-anchor="middle" fill="#e8dec8" font-family="JetBrains Mono, monospace" font-size="9.5">${node.build} • #${node.id}</text>
+                `;
+
+                g.addEventListener('mouseenter', () => selectAppleNode(node.id, true));
+                g.addEventListener('click', () => {
+                    selectAppleNode(node.id, true);
+                    openCurrentNode(false);
+                });
+
+                layer.appendChild(g);
+            });
+        }
+
+        function renderQuickAppleStrip() {
+            const strip = document.getElementById('apple-quick-strip');
+            strip.innerHTML = APPLE_NODES.map(node => {
+                const isTeam = node.type === 'team';
+                return `
+                    <button onclick="selectAppleNode(${node.id}, true)" id="strip-apple-${node.id}"
+                        class="p-2.5 rounded-xl bg-eden-abyss/80 hover:bg-eden-thicket text-left transition flex flex-col justify-between gap-1 border border-transparent">
+                        <div class="flex items-center justify-between">
+                            <span class="font-mono text-[11px] ${isTeam ? 'text-eden-gold' : 'text-eden-scarlet'} font-bold">#${node.id} • ${node.build}</span>
+                            <i class="fa-solid fa-apple-whole text-xs ${isTeam ? 'text-eden-gold' : 'text-eden-scarlet'}"></i>
+                        </div>
+                        <span class="font-cinzel text-xs text-eden-parchment truncate">${node.label}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectAppleNode(id, movePilgrim = true) {
+            activeAppleId = id;
+            const node = APPLE_NODES.find(n => n.id === id);
+            if (!node) return;
+
+            // Highlight SVG node
+            document.querySelectorAll('.apple-marker').forEach(el => el.classList.remove('active-node'));
+            const activeSvg = document.getElementById(`svg-apple-${id}`);
+            if (activeSvg) activeSvg.classList.add('active-node');
+
+            // Highlight quick strip card
+            APPLE_NODES.forEach(n => {
+                const card = document.getElementById(`strip-apple-${n.id}`);
+                if (card) {
+                    if (n.id === id) {
+                        card.classList.add('border-eden-gold/60', 'bg-eden-thicket');
+                    } else {
+                        card.classList.remove('border-eden-gold/60', 'bg-eden-thicket');
+                    }
+                }
+            });
+
+            // Move Pilgrim avatar smoothly along the maze toward the selected apple
+            if (movePilgrim) {
+                const pilgrim = document.getElementById('pilgrim-token');
+                if (pilgrim) {
+                    pilgrim.setAttribute('transform', `translate(${node.x}, ${Math.min(node.y + 52, 620)})`);
+                }
+                document.getElementById('pilgrim-status').textContent = `Apple #${node.id} (${node.label})`;
+            }
+
+            // Update Inspector Panel
+            const isTeam = node.type === 'team';
+            document.getElementById('inspector-tag').textContent = `Apple Node #${node.id} • ${node.build}`;
+            document.getElementById('inspector-tag').className = isTeam
+                ? 'px-2.5 py-1 rounded-full font-mono text-[11px] uppercase tracking-wider bg-eden-gold/25 text-eden-gold'
+                : 'px-2.5 py-1 rounded-full font-mono text-[11px] uppercase tracking-wider bg-eden-crimson/55 text-eden-parchment';
+
+            document.getElementById('inspector-coords').textContent = node.coords;
+            document.getElementById('inspector-title').textContent = node.title;
+            document.getElementById('inspector-author').textContent = `${node.author} • ${node.focus}`;
+            document.getElementById('inspector-summary').textContent = node.summary;
+            document.getElementById('inspector-quote').textContent = node.quote;
+
+            const emblem = document.getElementById('inspector-emblem');
+            emblem.className = isTeam
+                ? 'w-12 h-12 shrink-0 rounded-xl bg-gradient-to-br from-eden-gilt to-eden-gold flex items-center justify-center text-eden-abyss text-xl shadow-lg'
+                : 'w-12 h-12 shrink-0 rounded-xl bg-gradient-to-br from-eden-scarlet to-eden-abyss flex items-center justify-center text-eden-gold text-xl shadow-lg';
+        }
+
+        function resetPilgrim() {
+            const pilgrim = document.getElementById('pilgrim-token');
+            if (pilgrim) pilgrim.setAttribute('transform', 'translate(500, 605)');
+            document.getElementById('pilgrim-status').textContent = 'Gate of Eden (Node 0)';
+        }
+
+        function toggleMazeOverlay() {
+            showMazePaths = !showMazePaths;
+            const layer = document.getElementById('labyrinth-layer');
+            const btn = document.getElementById('toggle-paths-btn');
+            layer.style.opacity = showMazePaths ? '0.9' : '0.15';
+            btn.innerHTML = `<i class="fa-solid fa-route mr-1"></i>Labyrinth Paths: ${showMazePaths ? 'ON' : 'OFF'}`;
+        }
+
+        // Keyboard Arrow / WASD Maze Stepping across the 8 Apple Nodes
+        document.addEventListener('keydown', (e) => {
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+            const homeVisible = !document.getElementById('view-home').classList.contains('hidden');
+            if (!homeVisible) return;
+
+            if (['ArrowRight', 'ArrowDown', 'd', 'D', 's', 'S'].includes(e.key)) {
+                e.preventDefault();
+                const next = activeAppleId >= 8 ? 1 : activeAppleId + 1;
+                selectAppleNode(next, true);
+            } else if (['ArrowLeft', 'ArrowUp', 'a', 'A', 'w', 'W'].includes(e.key)) {
+                e.preventDefault();
+                const prev = activeAppleId <= 1 ? 8 : activeAppleId - 1;
+                selectAppleNode(prev, true);
+            } else if (e.key === 'Enter') {
+                openCurrentNode(false);
+            }
+        });
+
+        function openCurrentNode(inNewWindow) {
+            const node = APPLE_NODES.find(n => n.id === activeAppleId);
+            if (!node) return;
+
+            if (inNewWindow) {
+                launchDedicatedWindow(node);
+                return;
+            }
+
+            if (node.type === 'team') {
+                navigateTo('team-essays');
+                selectTeamEssay(node.id === 2 ? 'build2' : 'build6');
+            } else {
+                navigateTo('build-7');
+                loadScholarView(node.id);
+            }
+        }
+
+        function launchDedicatedWindow(node) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('node', node.id);
+            const win = window.open(url.toString(), '_blank');
+            if (!win) {
+                showToast('Pop-up blocked — please allow new windows for this site.');
+            }
+        }
+
+        /* =====================================================================
+           5. BUILD 7 — INDIVIDUAL SCHOLAR PAGES (6 DEDICATED DOCUMENTS)
+           ===================================================================== */
+        const SCHOLAR_IDS = [1, 3, 4, 5, 7, 8];
+
+        function renderScholarSelector() {
+            const bar = document.getElementById('scholar-selector-bar');
+            bar.innerHTML = SCHOLAR_IDS.map((id, idx) => {
+                const data = scholarEssays[id];
+                return `
+                    <button onclick="loadScholarView(${id})" id="sch-tab-${id}"
+                        class="p-3 rounded-xl bg-eden-thicket/60 hover:bg-eden-thicket text-left transition border border-transparent">
+                        <span class="font-mono text-[11px] text-eden-scarlet block">Apple #${id} • Build 7</span>
+                        <span class="font-cinzel text-sm text-eden-parchment font-bold block truncate">${data.author}</span>
+                        <span class="font-garamond italic text-xs text-eden-vellum block truncate">${data.focus}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function loadScholarView(id) {
+            activeScholarId = id;
+            const data = scholarEssays[id];
+            if (!data) return;
+
+            SCHOLAR_IDS.forEach(sid => {
+                const btn = document.getElementById(`sch-tab-${sid}`);
+                if (btn) {
+                    if (sid === id) {
+                        btn.classList.add('border-eden-gold', 'bg-eden-crimson/35');
+                    } else {
+                        btn.classList.remove('border-eden-gold', 'bg-eden-crimson/35');
+                    }
+                }
+            });
+
+            document.getElementById('sch-badge').textContent = `Apple #${id} • Build 7`;
+            document.getElementById('sch-book-focus').textContent = data.focus;
+            document.getElementById('sch-essay-title').textContent = data.title;
+            document.getElementById('sch-author-line').textContent = `Authored by ${data.author}`;
+
+            const bodyContainer = document.getElementById('sch-essay-body');
+            bodyContainer.innerHTML = data.body
+                .split(/\n\s*\n/)
+                .map(p => `<p>${escapeHtml(p.trim())}</p>`)
+                .join('');
+
+            // Sync editor fields
+            document.getElementById('edit-sch-author').value = data.author;
+            document.getElementById('edit-sch-focus').value = data.focus;
+            document.getElementById('edit-sch-title').value = data.title;
+            document.getElementById('edit-sch-body').value = data.body;
+        }
+
+        function toggleScholarEditor() {
+            document.getElementById('scholar-editor-box').classList.toggle('hidden');
+        }
+
+        function saveScholarEssay() {
+            scholarEssays[activeScholarId] = {
+                author: document.getElementById('edit-sch-author').value.trim() || `Individual Scholar ${activeScholarId}`,
+                focus: document.getElementById('edit-sch-focus').value.trim() || 'Paradise Lost',
+                title: document.getElementById('edit-sch-title').value.trim() || 'Untitled Essay',
+                body: document.getElementById('edit-sch-body').value.trim()
+            };
+            localStorage.setItem('pl_scholar_essays', JSON.stringify(scholarEssays));
+            renderScholarSelector();
+            loadScholarView(activeScholarId);
+            toggleScholarEditor();
+            showToast(`Saved Build 7 Essay for Apple #${activeScholarId}`);
+        }
+
+        function openCurrentScholarNewWindow() {
+            const node = APPLE_NODES.find(n => n.id === activeScholarId);
+            if (node) launchDedicatedWindow(node);
+        }
+
+        /* =====================================================================
+           6. TEAM ESSAYS (BUILD 2 & BUILD 6)
+           ===================================================================== */
+        function selectTeamEssay(key) {
+            activeTeamKey = key;
+            const b2Btn = document.getElementById('tab-team-build2');
+            const b6Btn = document.getElementById('tab-team-build6');
+
+            if (key === 'build2') {
+                b2Btn.className = 'px-6 py-3 rounded-xl font-cinzel text-sm tracking-wider bg-gradient-to-r from-eden-crimson to-eden-scarlet text-eden-parchment shadow-lg transition flex items-center gap-2.5';
+                b6Btn.className = 'px-6 py-3 rounded-xl font-cinzel text-sm tracking-wider bg-eden-thicket/80 text-eden-vellum hover:text-eden-gold transition flex items-center gap-2.5';
+            } else {
+                b6Btn.className = 'px-6 py-3 rounded-xl font-cinzel text-sm tracking-wider bg-gradient-to-r from-eden-crimson to-eden-scarlet text-eden-parchment shadow-lg transition flex items-center gap-2.5';
+                b2Btn.className = 'px-6 py-3 rounded-xl font-cinzel text-sm tracking-wider bg-eden-thicket/80 text-eden-vellum hover:text-eden-gold transition flex items-center gap-2.5';
+            }
+
+            loadTeamEssayView(key);
+        }
+
+        function loadTeamEssayView(key) {
+            const essay = teamEssays[key];
+            if (!essay) return;
+
+            document.getElementById('team-badge').textContent = essay.badge;
+            document.getElementById('team-title').textContent = essay.title;
+            document.getElementById('team-meta').textContent = essay.meta;
+            document.getElementById('team-body').innerHTML = essay.body
+                .split(/\n\s*\n/)
+                .map(p => `<p>${escapeHtml(p.trim())}</p>`)
+                .join('');
+
+            document.getElementById('edit-team-title').value = essay.title;
+            document.getElementById('edit-team-meta').value = essay.meta;
+            document.getElementById('edit-team-body').value = essay.body;
+        }
+
+        function toggleTeamEditor() {
+            document.getElementById('team-editor-box').classList.toggle('hidden');
+        }
+
+        function saveTeamEssay() {
+            teamEssays[activeTeamKey].title = document.getElementById('edit-team-title').value.trim();
+            teamEssays[activeTeamKey].meta = document.getElementById('edit-team-meta').value.trim();
+            teamEssays[activeTeamKey].body = document.getElementById('edit-team-body').value.trim();
+            localStorage.setItem('pl_team_essays', JSON.stringify(teamEssays));
+            loadTeamEssayView(activeTeamKey);
+            toggleTeamEditor();
+            showToast(`Updated ${activeTeamKey.toUpperCase()} Team Essay`);
+        }
+
+        function openTeamEssayNewWindow() {
+            const nodeId = activeTeamKey === 'build2' ? 2 : 6;
+            const node = APPLE_NODES.find(n => n.id === nodeId);
+            if (node) launchDedicatedWindow(node);
+        }
+
+        /* =====================================================================
+           7. READER'S JOURNAL & DECISIONS LOG
+           ===================================================================== */
+        function toggleJournalForm() {
+            document.getElementById('journal-form-box').classList.toggle('hidden');
+        }
+
+        function filterJournalEntries(bookFilter) {
+            activeJournalFilter = bookFilter;
+            document.querySelectorAll('.j-filter-chip').forEach(btn => {
+                if (btn.textContent.includes(bookFilter) || (bookFilter === 'ALL' && btn.textContent.includes('All'))) {
+                    btn.className = 'j-filter-chip active px-3 py-1 rounded-full font-mono text-xs bg-eden-gold text-eden-abyss font-medium';
+                } else {
+                    btn.className = 'j-filter-chip px-3 py-1 rounded-full font-mono text-xs bg-eden-thicket/70 text-eden-vellum hover:text-eden-gold';
+                }
+            });
+            renderJournalGrid();
+        }
+
+        function renderJournalGrid() {
+            const grid = document.getElementById('journal-grid');
+            const filtered = activeJournalFilter === 'ALL'
+                ? journalEntries
+                : journalEntries.filter(entry => entry.book.includes(activeJournalFilter));
+
+            grid.innerHTML = filtered.map(entry => `
+                <article class="eden-panel rounded-2xl p-6 flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full bg-eden-crimson/50 text-eden-gold font-mono text-xs">${escapeHtml(entry.book)}</span>
+                            <span class="font-mono text-xs text-eden-ash">By ${escapeHtml(entry.author)}</span>
+                        </div>
+                        <h3 class="font-cinzel text-xl text-eden-parchment font-bold">${escapeHtml(entry.title)}</h3>
+                        ${entry.quote ? `<blockquote class="p-3 rounded-lg bg-eden-abyss/70 border-l-2 border-eden-gold font-garamond italic text-base text-eden-gold/90">${escapeHtml(entry.quote)}</blockquote>` : ''}
+                        <p class="font-garamond text-lg text-eden-vellum leading-relaxed">${escapeHtml(entry.body)}</p>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function addJournalEntry() {
+            const author = document.getElementById('j-input-author').value.trim() || 'Anonymous Pilgrim';
+            const book = document.getElementById('j-input-book').value;
+            const title = document.getElementById('j-input-title').value.trim();
+            const quote = document.getElementById('j-input-quote').value.trim();
+            const body = document.getElementById('j-input-body').value.trim();
+
+            if (!title || !body) {
+                showToast('Please enter both a heading and reflection.');
+                return;
+            }
+
+            journalEntries.unshift({
+                id: Date.now(),
+                author,
+                book,
+                title,
+                quote,
+                body
+            });
+
+            localStorage.setItem('pl_journal_entries', JSON.stringify(journalEntries));
+            document.getElementById('j-input-title').value = '';
+            document.getElementById('j-input-quote').value = '';
+            document.getElementById('j-input-body').value = '';
+            toggleJournalForm();
+            renderJournalGrid();
+            showToast('Reflection inscribed into the Reader’s Journal');
+        }
+
+        function renderDecisionsLog() {
+            const list = document.getElementById('decisions-log-list');
+            list.innerHTML = decisionsLog.map(item => `
+                <li class="p-3.5 rounded-xl bg-eden-abyss/70 flex items-start gap-3">
+                    <span class="px-2.5 py-0.5 rounded bg-eden-gold/20 text-eden-gold font-mono text-xs shrink-0 mt-0.5">${escapeHtml(item.date)}</span>
+                    <span class="text-eden-parchment/90 leading-relaxed">${escapeHtml(item.text)}</span>
+                </li>
+            `).join('');
+        }
+
+        function appendDecisionLog() {
+            const input = document.getElementById('new-decision-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const today = new Date();
+            const formattedDate = `${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')}/${today.getFullYear()}`;
+            decisionsLog.push({ date: formattedDate, text });
+            localStorage.setItem('pl_decisions_log', JSON.stringify(decisionsLog));
+            input.value = '';
+            renderDecisionsLog();
+            showToast('New entry added to Decisions Log');
+        }
+
+        /* =====================================================================
+           8. AMBIENT PARTICLE CANVAS & UTILITIES
+           ===================================================================== */
+        function initAtmosphereCanvas() {
+            const canvas = document.getElementById('eden-atmosphere');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            const particles = [];
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            for (let i = 0; i < 42; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    r: Math.random() * 1.8 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.25,
+                    vy: -Math.random() * 0.35 - 0.1,
+                    alpha: Math.random() * 0.55 + 0.15,
+                    gold: Math.random() > 0.35
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.y < -10) p.y = height + 10;
+                    if (p.x < -10) p.x = width + 10;
+                    if (p.x > width + 10) p.x = -10;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = p.gold
+                        ? `rgba(197, 160, 89, ${p.alpha})`
+                        : `rgba(166, 28, 40, ${p.alpha * 0.8})`;
+                    ctx.fill();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function copyHex(hex) {
+            const temp = document.createElement('textarea');
+            temp.value = hex;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast(`Copied ${hex} to clipboard`);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('eden-toast');
+            toast.textContent = msg;
+            toast.classList.remove('hidden');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => toast.classList.add('hidden'), 2600);
+        }
+
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+    </script>
+</body>
+</html>
